@@ -22,7 +22,7 @@ if (loginForm) {
             setTimeout(() => {
                 if (email === 'admin@myfitvybe.com' && password === 'Ravi@123') {
                     sessionStorage.setItem('mockAdminUser', email);
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/admin/dashboard.html';
                 } else {
                     errorMessage.textContent = 'Invalid credentials. Use admin@myfitvybe.com / Ravi@123';
                     loginBtn.textContent = 'Login to Dashboard';
@@ -35,7 +35,7 @@ if (loginForm) {
         // REAL FIREBASE AUTH
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = 'dashboard.html';
+            window.location.href = '/admin/dashboard.html';
         } catch (error) {
             console.error(error);
             errorMessage.textContent = 'Invalid email or password.';
@@ -52,7 +52,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (isMockMode) {
         const mockUser = sessionStorage.getItem('mockAdminUser');
         if (!mockUser) {
-            window.location.href = 'index.html'; // Redirect to login
+            window.location.href = '/admin/'; // Redirect to login
         } else {
             if(userEmailSpan) userEmailSpan.textContent = mockUser + ' (Mock Mode)';
         }
@@ -61,7 +61,7 @@ if (window.location.pathname.includes('dashboard.html')) {
             if (user) {
                 if(userEmailSpan) userEmailSpan.textContent = user.email;
             } else {
-                window.location.href = 'index.html'; // Redirect to login
+                window.location.href = '/admin/'; // Redirect to login
             }
         });
     }
@@ -73,11 +73,11 @@ if (logoutBtn) {
         e.preventDefault();
         if (isMockMode) {
             sessionStorage.removeItem('mockAdminUser');
-            window.location.href = 'index.html';
+            window.location.href = '/admin/';
         } else {
             try {
                 await signOut(auth);
-                window.location.href = 'index.html';
+                window.location.href = '/admin/';
             } catch (error) {
                 console.error("Logout error", error);
             }
