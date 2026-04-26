@@ -116,13 +116,100 @@ function renderProductsTable(products) {
     }).join('');
 }
 
+// --- Image Upload & Auto-Resize Logic ---
+let currentProductImages = [];
+const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+const prodImgUpload = document.getElementById('prodImgUpload');
+
+function renderImagePreviews() {
+    imagePreviewContainer.innerHTML = '';
+    currentProductImages.forEach((src, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        
+        const img = document.createElement('img');
+        img.src = src;
+        img.style.width = '80px';
+        img.style.height = '80px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '4px';
+        img.style.border = '1px solid var(--border-color)';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.innerHTML = '&times;';
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '-5px';
+        removeBtn.style.right = '-5px';
+        removeBtn.style.background = 'var(--primary-red)';
+        removeBtn.style.color = 'white';
+        removeBtn.style.border = 'none';
+        removeBtn.style.borderRadius = '50%';
+        removeBtn.style.width = '20px';
+        removeBtn.style.height = '20px';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.lineHeight = '20px';
+        removeBtn.style.padding = '0';
+        removeBtn.onclick = (e) => {
+            e.preventDefault();
+            currentProductImages.splice(index, 1);
+            renderImagePreviews();
+        };
+        
+        wrapper.appendChild(img);
+        wrapper.appendChild(removeBtn);
+        imagePreviewContainer.appendChild(wrapper);
+    });
+}
+
+function resizeImage(file, maxWidth = 800) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > maxWidth) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                // Compress to 80% quality JPEG
+                resolve(canvas.toDataURL('image/jpeg', 0.8));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+prodImgUpload.addEventListener('change', async (e) => {
+    const files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+        const base64Img = await resizeImage(files[i]);
+        currentProductImages.push(base64Img);
+    }
+    renderImagePreviews();
+    prodImgUpload.value = ''; // clear input
+});
+
 // Handle Form Submit
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    if (currentProductImages.length === 0) {
+        alert("Please upload at least one image.");
+        return;
+    }
+    
     const id = document.getElementById('prodId').value;
-    const imgInput = document.getElementById('prodImg').value;
-    const images = imgInput.split('\n').map(url => url.trim()).filter(url => url.length > 0);
     
     const productData = {
         name: document.getElementById('prodName').value,
@@ -130,7 +217,7 @@ productForm.addEventListener('submit', async (e) => {
         originalPrice: Number(document.getElementById('prodOriginalPrice').value),
         category: document.getElementById('prodCategory').value,
         desc: document.getElementById('prodDesc').value,
-        images: images
+        images: currentProductImages
     };
     
     if (isMockMode) {
@@ -149,6 +236,9 @@ productForm.addEventListener('submit', async (e) => {
         }
     }
     
+    
+    currentProductImages = [];
+    renderImagePreviews();
     closeModal('productModal');
     loadProducts(); // Refresh
 });
@@ -185,8 +275,8 @@ window.editProduct = function(id) {
         document.getElementById('prodCategory').value = product.category;
         document.getElementById('prodDesc').value = product.desc;
         
-        const imgUrls = product.images ? product.images.join('\n') : (product.img || '');
-        document.getElementById('prodImg').value = imgUrls;
+        currentProductImages = product.images ? [...product.images] : (product.img ? [product.img] : []);
+        renderImagePreviews();
         
         document.getElementById('productModalTitle').textContent = 'Edit Product';
         openModal('productModal');

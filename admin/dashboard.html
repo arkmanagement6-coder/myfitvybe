@@ -187,8 +187,9 @@
                     <textarea id="prodDesc" class="form-control" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Image URLs (Enter one URL per line)</label>
-                    <textarea id="prodImg" class="form-control" rows="3" placeholder="../assets/product_1.png&#10;../assets/product_2.png" required></textarea>
+                    <label>Product Images (Upload multiple)</label>
+                    <input type="file" id="prodImgUpload" class="form-control" multiple accept="image/*">
+                    <div id="imagePreviewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">Save Product</button>
             </form>
