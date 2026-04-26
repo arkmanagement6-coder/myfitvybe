@@ -1,5 +1,5 @@
 import { db, isMockMode } from './firebase-config.js';
-import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // --- SPA Navigation ---
 const navItems = document.querySelectorAll('.sidebar .nav-item[data-target]');
@@ -472,25 +472,47 @@ if(settingsForm) {
 
 // --- Enquiries View ---
 const enquiriesTableBody = document.getElementById('enquiriesTableBody');
+let enquiriesUnsubscribe = null;
+
 async function loadEnquiries() {
+    if (enquiriesUnsubscribe) enquiriesUnsubscribe();
     enquiriesTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading...</td></tr>';
     
-    let enquiries = [];
     if (isMockMode) {
-        enquiries = MockDB.get('enquiries');
+        // Mock Mode: Manual Refresh or Interval
+        renderMockEnquiries();
+        // Set up local polling for mock real-time
+        if (!window.enquiryInterval) {
+            window.enquiryInterval = setInterval(renderMockEnquiries, 3000);
+        }
     } else {
+        // Real Firestore: Real-time Listener
         try {
-            const querySnapshot = await getDocs(collection(db, "enquiries"));
-            querySnapshot.forEach((doc) => {
-                enquiries.push({ id: doc.id, ...doc.data() });
+            enquiriesUnsubscribe = onSnapshot(collection(db, "enquiries"), (snapshot) => {
+                let enquiries = [];
+                snapshot.forEach((doc) => {
+                    enquiries.push({ id: doc.id, ...doc.data() });
+                });
+                // Sort by date/time (Firestore timestamp or Date string)
+                enquiries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                renderEnquiriesTable(enquiries);
+            }, (error) => {
+                console.error("Firestore error:", error);
+                enquiriesTableBody.innerHTML = `<tr><td colspan="6" style="color:red;">Error: ${error.message}</td></tr>`;
             });
         } catch (e) {
-            console.error("Firestore Error", e);
-            enquiriesTableBody.innerHTML = `<tr><td colspan="6" style="color:red;">Error: ${e.message}</td></tr>`;
-            return;
+            console.error("Setup error:", e);
         }
     }
-    
+}
+
+function renderMockEnquiries() {
+    const enquiries = MockDB.get('enquiries');
+    renderEnquiriesTable(enquiries);
+    document.getElementById('stat-enquiries').textContent = enquiries.length;
+}
+
+function renderEnquiriesTable(enquiries) {
     if (enquiries.length === 0) {
         enquiriesTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No enquiries found.</td></tr>';
         return;
@@ -507,7 +529,7 @@ async function loadEnquiries() {
                 <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" onclick="viewEnquiryDetails('${e.id}')">Details</button>
             </td>
         </tr>
-    `).join('');
+    `).reverse().join(''); // Show latest first
 }
 
 window.viewEnquiryDetails = function(id) {
