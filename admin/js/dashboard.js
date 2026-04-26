@@ -26,6 +26,7 @@ navItems.forEach(item => {
         if (targetId === 'services') loadServices();
         if (targetId === 'orders') loadOrders();
         if (targetId === 'settings') loadSettings();
+        if (targetId === 'enquiries') loadEnquiries();
     });
 });
 
@@ -67,6 +68,18 @@ if (isMockMode && MockDB.get('services').length === 0) {
     });
     MockDB.add('services', {
         name: 'Weight Gain Plan', desc: 'Build healthy muscle mass', features: ['Calorie-surplus delicious meals', 'Focus on muscle, not fat', 'Weekly Video Check-ins'], icon: 'fas fa-dumbbell'
+    });
+}
+
+if (isMockMode && MockDB.get('enquiries').length === 0) {
+    MockDB.add('enquiries', {
+        date: new Date().toLocaleDateString(),
+        name: 'Amit Sharma',
+        email: 'amit@example.com',
+        phone: '+91 9876543210',
+        goal: 'Weight Loss',
+        metrics: '85kg -> 70kg (175cm)',
+        details: 'Lifestyle: Sedentary'
     });
 }
 
@@ -457,10 +470,61 @@ if(settingsForm) {
     });
 }
 
+// --- Enquiries View ---
+const enquiriesTableBody = document.getElementById('enquiriesTableBody');
+async function loadEnquiries() {
+    enquiriesTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading...</td></tr>';
+    
+    let enquiries = [];
+    if (isMockMode) {
+        enquiries = MockDB.get('enquiries');
+    } else {
+        try {
+            const querySnapshot = await getDocs(collection(db, "enquiries"));
+            querySnapshot.forEach((doc) => {
+                enquiries.push({ id: doc.id, ...doc.data() });
+            });
+        } catch (e) {
+            console.error("Firestore Error", e);
+            enquiriesTableBody.innerHTML = `<tr><td colspan="6" style="color:red;">Error: ${e.message}</td></tr>`;
+            return;
+        }
+    }
+    
+    if (enquiries.length === 0) {
+        enquiriesTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No enquiries found.</td></tr>';
+        return;
+    }
+
+    enquiriesTableBody.innerHTML = enquiries.map(e => `
+        <tr>
+            <td>${e.date || 'N/A'}</td>
+            <td><strong>${e.name}</strong></td>
+            <td>${e.phone}<br><small>${e.email}</small></td>
+            <td><span class="badge badge-blue">${e.goal}</span></td>
+            <td>${e.metrics}</td>
+            <td>
+                <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" onclick="viewEnquiryDetails('${e.id}')">Details</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+window.viewEnquiryDetails = function(id) {
+    let enquiries = isMockMode ? MockDB.get('enquiries') : []; // In real mode, we should fetch or use a state
+    const e = enquiries.find(x => x.id === id);
+    if(e) {
+        alert(`Enquiry Details\\n\\nName: ${e.name}\\nPhone: ${e.phone}\\nEmail: ${e.email}\\n\\nGoal: ${e.goal}\\nMetrics: ${e.metrics}\\nOther: ${e.details || 'N/A'}`);
+    } else {
+        alert("Details available in Mock Mode. Real Firestore requires state management.");
+    }
+}
+
 // Initialize Overview Stats
 setTimeout(() => {
     if (isMockMode) {
         document.getElementById('stat-products').textContent = MockDB.get('products').length;
         document.getElementById('stat-orders').textContent = (JSON.parse(localStorage.getItem('orders')) || []).length;
+        document.getElementById('stat-enquiries').textContent = (JSON.parse(localStorage.getItem('enquiries')) || []).length;
     }
 }, 500);

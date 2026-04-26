@@ -257,18 +257,18 @@
             
             <p class="text-center" style="margin-bottom: 25px;">Enter your details below to unlock your custom diet plan and claim your <strong>50% OFF discount code</strong>.</p>
             
-            <form action="index.html" onsubmit="event.preventDefault(); alert('Lead captured! Redirecting to dashboard...'); window.location.href='index.html';">
+            <form id="quizLeadForm" onsubmit="submitQuiz(event)">
                 <div class="input-group">
                     <label>Full Name</label>
-                    <input type="text" required placeholder="John Doe">
+                    <input type="text" id="leadName" required placeholder="John Doe">
                 </div>
                 <div class="input-group">
                     <label>WhatsApp Number</label>
-                    <input type="tel" required placeholder="+91 98765 43210">
+                    <input type="tel" id="leadPhone" required placeholder="+91 98765 43210">
                 </div>
                 <div class="input-group">
                     <label>Email Address</label>
-                    <input type="email" required placeholder="john@example.com">
+                    <input type="email" id="leadEmail" required placeholder="john@example.com">
                 </div>
                 
                 <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.2rem; padding: 18px;">
@@ -376,6 +376,35 @@
                 document.getElementById('estimatedTime').innerText = weeks + " weeks";
                 
             }, 3500);
+        }
+
+        function submitQuiz(e) {
+            e.preventDefault();
+            
+            const goal = document.querySelector('#step1 .selected')?.innerText || 'Not Selected';
+            const weight = document.getElementById('currentWeight').value;
+            const target = document.getElementById('targetWeight').value;
+            const height = document.getElementById('heightInput').value;
+            const lifestyle = document.querySelector('#step4 .selected')?.innerText || 'Not Selected';
+            
+            const enquiry = {
+                id: Date.now().toString(),
+                date: new Date().toLocaleDateString(),
+                name: document.getElementById('leadName').value,
+                phone: document.getElementById('leadPhone').value,
+                email: document.getElementById('leadEmail').value,
+                goal: goal,
+                metrics: `${weight}kg -> ${target}kg (${height}cm)`,
+                details: `Lifestyle: ${lifestyle}`
+            };
+
+            // Save to LocalStorage for Admin Dashboard Mock Mode
+            let enquiries = JSON.parse(localStorage.getItem('enquiries') || '[]');
+            enquiries.push(enquiry);
+            localStorage.setItem('enquiries', JSON.stringify(enquiries));
+
+            alert('Congratulations! Your analysis is complete and your lead has been captured. Redirecting...');
+            window.location.href = 'index.html';
         }
     </script>
 </body>
