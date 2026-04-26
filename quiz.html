@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Quiz | MyFitVybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .quiz-header {
+            padding: 20px;
+            text-align: center;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .quiz-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            flex: 1;
+            width: 90%;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #E0E0E0;
+            border-radius: var(--radius-pill);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-red);
+            width: 20%;
+            transition: width 0.4s ease;
+        }
+        
+        .quiz-step {
+            display: none;
+            animation: fadeInRight 0.4s ease;
+        }
+        
+        .quiz-step.active {
+            display: block;
+        }
+        
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .quiz-question {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .option-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .quiz-option {
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .quiz-option:hover {
+            background: #F0F4F8;
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+        
+        .quiz-option.selected {
+            background: rgba(230, 57, 70, 0.1);
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        /* Final Step */
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-red);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .result-box {
+            background: #F0FDF4;
+            border: 2px dashed #25D366;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="quiz-header">
+        <a href="index.html" class="logo" style="text-decoration: none;">MyFit<span style="color:var(--primary-red)">Vybe</span></a>
+    </header>
+
+    <div class="quiz-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Step 1: Goal -->
+        <div class="quiz-step active" id="step1">
+            <h2 class="quiz-question">What is your primary goal?</h2>
+            <div class="option-grid">
+                <div class="quiz-option" onclick="selectOption(this, 1)">Weight Loss</div>
+                <div class="quiz-option" onclick="selectOption(this, 1)">Weight Gain</div>
+                <div class="quiz-option" onclick="selectOption(this, 1)">Maintain Health</div>
+                <div class="quiz-option" onclick="selectOption(this, 1)">Manage Condition (PCOD, Thyroid)</div>
+            </div>
+            <div class="btn-group" style="justify-content: flex-end;">
+                <button class="btn btn-primary" onclick="nextStep(2)">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 2: Demographics -->
+        <div class="quiz-step" id="step2">
+            <h2 class="quiz-question">Tell us about yourself</h2>
+            
+            <div class="input-group">
+                <label>Gender</label>
+                <div style="display: flex; gap: 15px;">
+                    <div class="quiz-option" style="flex:1;" onclick="selectGender(this)">Male</div>
+                    <div class="quiz-option" style="flex:1;" onclick="selectGender(this)">Female</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Age</label>
+                <input type="number" placeholder="Enter your age" min="15" max="90" id="ageInput">
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="prevStep(1)">Back</button>
+                <button class="btn btn-primary" onclick="nextStep(3)">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 3: Body Metrics -->
+        <div class="quiz-step" id="step3">
+            <h2 class="quiz-question">What are your current metrics?</h2>
+            
+            <div class="input-group">
+                <label>Current Weight (kg)</label>
+                <input type="number" placeholder="E.g. 85" id="currentWeight">
+            </div>
+            
+            <div class="input-group">
+                <label>Target Weight (kg)</label>
+                <input type="number" placeholder="E.g. 70" id="targetWeight">
+            </div>
+            
+            <div class="input-group">
+                <label>Height (cm)</label>
+                <input type="number" placeholder="E.g. 170" id="heightInput">
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="prevStep(2)">Back</button>
+                <button class="btn btn-primary" onclick="nextStep(4)">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 4: Lifestyle -->
+        <div class="quiz-step" id="step4">
+            <h2 class="quiz-question">How active is your lifestyle?</h2>
+            <div class="option-grid">
+                <div class="quiz-option" onclick="selectOption(this, 4)">Sedentary (Desk Job)</div>
+                <div class="quiz-option" onclick="selectOption(this, 4)">Lightly Active</div>
+                <div class="quiz-option" onclick="selectOption(this, 4)">Moderately Active (Workout 3x/week)</div>
+                <div class="quiz-option" onclick="selectOption(this, 4)">Very Active</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="prevStep(3)">Back</button>
+                <button class="btn btn-primary" onclick="analyzeResults()">Analyze Profile</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Loading / Analysis -->
+        <div class="quiz-step" id="step5" style="text-align: center; padding: 40px 0;">
+            <div class="loading-spinner"></div>
+            <h2 class="text-blue">AI Analyzing Your Profile...</h2>
+            <p class="text-muted" id="loadingText">Calculating BMI & Metabolic Rate...</p>
+        </div>
+
+        <!-- Final Step: Lead Capture -->
+        <div class="quiz-step" id="step6">
+            <h2 class="quiz-question" style="color: #25D366;">Your Custom Plan is Ready!</h2>
+            
+            <div class="result-box">
+                <h3 style="margin-bottom: 10px;">Great News! 🎉</h3>
+                <p>Based on your profile, you can safely reach your target weight in <strong><span id="estimatedTime">12 weeks</span></strong> with our personalized diet protocol.</p>
+            </div>
+            
+            <p class="text-center" style="margin-bottom: 25px;">Enter your details below to unlock your custom diet plan and claim your <strong>50% OFF discount code</strong>.</p>
+            
+            <form action="index.html" onsubmit="event.preventDefault(); alert('Lead captured! Redirecting to dashboard...'); window.location.href='index.html';">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="John Doe">
+                </div>
+                <div class="input-group">
+                    <label>WhatsApp Number</label>
+                    <input type="tel" required placeholder="+91 98765 43210">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" required placeholder="john@example.com">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.2rem; padding: 18px;">
+                    Get Your Diet Plan Now <i class="fas fa-lock" style="margin-left: 8px; font-size: 0.9rem;"></i>
+                </button>
+                <p style="text-align: center; font-size: 0.85rem; color: #888; margin-top: 15px;">Your data is 100% secure. We hate spam.</p>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        function selectOption(element, stepNum) {
+            // Remove selected class from all options in the current step
+            const options = document.getElementById('step' + stepNum).querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            // Add selected class to clicked option
+            element.classList.add('selected');
+        }
+
+        function selectGender(element) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            // Update progress bar (5 steps total, so 20% each step jump)
+            const progress = (step - 1) * 25;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            const progress = (step - 1) * 25;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function analyzeResults() {
+            nextStep(5);
+            document.getElementById('progressFill').style.width = `100%`;
+            
+            const loadingText = document.getElementById('loadingText');
+            
+            setTimeout(() => { loadingText.innerText = "Selecting best local foods..."; }, 1000);
+            setTimeout(() => { loadingText.innerText = "Creating daily schedule..."; }, 2000);
+            
+            setTimeout(() => {
+                nextStep(6);
+                
+                // Simple logic for estimated time
+                const curr = parseFloat(document.getElementById('currentWeight').value) || 80;
+                const target = parseFloat(document.getElementById('targetWeight').value) || 70;
+                const diff = Math.abs(curr - target);
+                
+                let weeks = Math.ceil(diff / 0.8); // Avg 0.8kg per week
+                if(weeks < 4) weeks = 4;
+                
+                document.getElementById('estimatedTime').innerText = weeks + " weeks";
+                
+            }, 3500);
+        }
+    </script>
+</body>
+</html>

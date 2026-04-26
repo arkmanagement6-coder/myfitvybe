@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vybe Whey Protein | Shop MyFitVybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            padding: 120px 20px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                padding-top: 100px;
+            }
+        }
+
+        /* Image Zoom */
+        .product-image-wrap {
+            position: relative;
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-image-wrap img {
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.5s ease;
+        }
+        .product-image-wrap:hover img {
+            transform: scale(1.2);
+            cursor: zoom-in;
+        }
+
+        /* Product Details */
+        .product-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .reviews {
+            color: #FFD700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        .reviews span {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .price-section {
+            margin: 20px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+        }
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-red);
+        }
+        .old-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+        .discount-badge {
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--primary-red);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .stock-status {
+            color: #25D366;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stock-status.low {
+            color: var(--primary-red);
+            animation: pulse-text 2s infinite;
+        }
+
+        @keyframes pulse-text {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Benefits */
+        .benefits-bullets {
+            list-style: none;
+            margin-bottom: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .benefits-bullets li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .benefits-bullets i { color: var(--primary-blue); }
+
+        /* Purchase Options */
+        .purchase-options {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+        }
+        .option-radio {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .option-radio:hover {
+            border-color: var(--primary-blue);
+        }
+        .option-radio.active {
+            border-color: var(--primary-red);
+            background: rgba(230, 57, 70, 0.05);
+        }
+        .option-radio input {
+            transform: scale(1.5);
+            accent-color: var(--primary-red);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .btn-buy {
+            flex: 1;
+            font-size: 1.2rem;
+            padding: 15px;
+        }
+        
+        .trust-icons {
+            display: flex;
+            justify-content: space-between;
+            background: #F8F9FA;
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .trust-icons div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .trust-icons i {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        /* Combo & Upsell */
+        .upsell-section {
+            background: var(--primary-blue);
+            color: white;
+            padding: 40px 20px;
+            border-radius: var(--radius-lg);
+            margin: 60px 20px;
+            text-align: center;
+        }
+        .upsell-card {
+            background: white;
+            color: var(--text-dark);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: inline-block;
+            margin-top: 20px;
+            max-width: 500px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">MyFit<span>Vybe</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Programs</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="quiz.html" class="text-red">AI Quiz</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Product Section -->
+    <div class="product-container">
+        <!-- Image Area -->
+        <div>
+            <div class="product-image-wrap">
+                <span class="badge badge-red" style="position: absolute; top: 20px; left: 20px; z-index: 2;">Trending</span>
+                <img src="assets/product.png" alt="Vybe Whey Protein">
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <h3>Frequently Asked Questions</h3>
+                <div style="margin-top: 20px;">
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <strong style="color: var(--primary-blue);">Is this suitable for beginners?</strong>
+                        <p class="text-muted" style="margin-top: 5px;">Absolutely! It's highly digestible and perfect for anyone starting their fitness journey.</p>
+                    </div>
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <strong style="color: var(--primary-blue);">Does it contain artificial sweeteners?</strong>
+                        <p class="text-muted" style="margin-top: 5px;">No, we use 100% natural Stevia extract.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Area -->
+        <div>
+            <h1 class="product-title">Vybe Whey Protein Isolate</h1>
+            <div class="reviews">
+                ★★★★★ <span>(4.9/5 from 1,284 Reviews)</span>
+            </div>
+            
+            <p class="text-muted" style="font-size: 1.1rem;">
+                Advanced rapid-absorbing whey isolate for optimal muscle recovery. Zero bloat, incredible taste, and zero added sugar.
+            </p>
+
+            <div class="price-section">
+                <span class="current-price">₹2,499</span>
+                <span class="old-price">₹3,999</span>
+                <span class="discount-badge">Save 38%</span>
+            </div>
+
+            <div class="stock-status low">
+                <i class="fas fa-fire"></i> Only 12 units left in stock - Order soon!
+            </div>
+
+            <ul class="benefits-bullets">
+                <li><i class="fas fa-check-circle"></i> 24g Premium Protein per scoop</li>
+                <li><i class="fas fa-check-circle"></i> 5.5g BCAAs for faster recovery</li>
+                <li><i class="fas fa-check-circle"></i> Added digestive enzymes (No bloating)</li>
+                <li><i class="fas fa-check-circle"></i> 100% Vegetarian & Gluten-Free</li>
+            </ul>
+
+            <div class="purchase-options">
+                <label class="option-radio active" onclick="document.querySelectorAll('.option-radio').forEach(el=>el.classList.remove('active')); this.classList.add('active');">
+                    <input type="radio" name="purchase_type" checked>
+                    <div>
+                        <strong>One-Time Purchase</strong>
+                        <div class="text-muted" style="font-size: 0.9rem;">₹2,499 / tub</div>
+                    </div>
+                </label>
+                
+                <label class="option-radio" onclick="document.querySelectorAll('.option-radio').forEach(el=>el.classList.remove('active')); this.classList.add('active');">
+                    <input type="radio" name="purchase_type">
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>Monthly Subscription <span class="badge badge-red" style="font-size: 0.7rem;">Save 15%</span></strong>
+                            <strong style="color: var(--primary-red);">₹2,124</strong>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.9rem;">Delivered every 30 days. Cancel anytime.</div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-outline" style="padding: 15px 25px;"><i class="fas fa-shopping-cart"></i></button>
+                <button class="btn btn-primary btn-buy" onclick="alert('Proceeding to checkout...')">Buy Now - ₹2,499</button>
+            </div>
+
+            <div class="trust-icons">
+                <div><i class="fas fa-shield-alt"></i> 100% Authentic</div>
+                <div><i class="fas fa-truck"></i> Free Delivery</div>
+                <div><i class="fas fa-undo"></i> 7-Day Returns</div>
+                <div><i class="fas fa-lock"></i> Secure Pay</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upsell / Combo -->
+    <div class="container">
+        <div class="upsell-section">
+            <h2 style="color: white; margin-bottom: 10px;">Accelerate Your Results</h2>
+            <p style="font-size: 1.2rem; opacity: 0.9;">Combine Whey Protein with our Daily Multi-Vitamin and Fat Burner Pro.</p>
+            
+            <div class="upsell-card">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
+                    <img src="assets/product.png" width="60" style="border-radius: 8px;">
+                    <i class="fas fa-plus" style="color: #ccc;"></i>
+                    <img src="assets/product.png" width="60" style="border-radius: 8px; filter: hue-rotate(90deg);">
+                </div>
+                <h3 style="color: var(--primary-blue);">The Ultimate Transformation Stack</h3>
+                <div style="margin: 15px 0;">
+                    <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary-red);">₹3,999</span>
+                    <span style="text-decoration: line-through; color: var(--text-muted);">₹5,999</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;">Add Combo to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

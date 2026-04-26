@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | MyFitVybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            padding: 140px 20px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container { grid-template-columns: 1fr; }
+        }
+
+        .contact-info {
+            background: var(--primary-blue);
+            color: white;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+        .contact-info h2 { color: white; margin-bottom: 20px; }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .info-item i {
+            font-size: 1.5rem;
+            color: var(--primary-red);
+            margin-top: 5px;
+        }
+        .info-item h4 { color: white; margin-bottom: 5px; }
+        .info-item p, .info-item a { color: rgba(255,255,255,0.8); text-decoration: none; }
+
+        .contact-form {
+            background: var(--bg-white);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid #eee;
+        }
+        .contact-form h2 { margin-bottom: 10px; }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(29, 53, 87, 0.1);
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .whatsapp-btn-large {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            transition: var(--transition);
+        }
+        .whatsapp-btn-large:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">MyFit<span>Vybe</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Programs</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="quiz.html" class="text-red">AI Quiz</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="contact-container">
+        <!-- Contact Info -->
+        <div class="contact-info animate-up">
+            <h2>Get in Touch</h2>
+            <p style="opacity: 0.8; margin-bottom: 40px;">We're here to help you transform your life. Reach out to us anytime.</p>
+            
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <h4>Headquarters</h4>
+                    <p>123 Fitness Hub, Bandra West<br>Mumbai, Maharashtra 400050</p>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <h4>Phone Support</h4>
+                    <p>+91 98765 43210<br><span style="font-size: 0.85rem; opacity: 0.8;">Mon-Sat: 9AM - 8PM</span></p>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <h4>Email Us</h4>
+                    <a href="mailto:hello@myfitvybe.com">hello@myfitvybe.com</a>
+                </div>
+            </div>
+
+            <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-btn-large">
+                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+            </a>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form animate-up" style="animation-delay: 0.2s;">
+            <h2>Book Free Consultation</h2>
+            <p class="text-muted" style="margin-bottom: 30px;">Fill out the form below and a coach will call you back within 24 hours.</p>
+            
+            <form onsubmit="event.preventDefault(); alert('Request sent! Our team will contact you shortly.');">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="form-control" placeholder="+91 98765 43210" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Primary Goal</label>
+                    <select class="form-control" required>
+                        <option value="">Select your goal...</option>
+                        <option value="weight_loss">Weight Loss</option>
+                        <option value="weight_gain">Weight Gain</option>
+                        <option value="medical">Medical Diet (PCOD/Thyroid/Diabetes)</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Time to Call</label>
+                    <input type="time" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Message (Optional)</label>
+                    <textarea class="form-control" placeholder="Tell us a bit about your current challenges..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 15px;">Submit Request <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

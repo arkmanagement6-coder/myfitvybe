@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Plans & Programs | MyFitVybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 120px 20px 60px;
+            text-align: center;
+        }
+        .page-header h1 { color: white; margin-bottom: 15px; }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .program-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-red);
+        }
+
+        .program-header {
+            padding: 30px;
+            text-align: center;
+            background: var(--bg-light);
+            border-bottom: 1px solid #eee;
+        }
+        .program-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--primary-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin: 0 auto 15px;
+        }
+
+        .program-body {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .program-features {
+            list-style: none;
+            margin-bottom: 30px;
+            flex: 1;
+        }
+        .program-features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: var(--text-muted);
+        }
+        .program-features i {
+            color: #25D366;
+            margin-top: 4px;
+        }
+
+        .consultation-banner {
+            background: linear-gradient(135deg, var(--primary-red), #b91c28);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 20px 80px;
+        }
+        @media (max-width: 768px) {
+            .consultation-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">MyFit<span>Vybe</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Programs</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="quiz.html" class="text-red">AI Quiz</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container animate-up">
+            <h1>Specialized Diet Programs</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.9;">
+                Choose a plan tailored to your specific goals and health conditions. Every plan is 100% customized for you.
+            </p>
+        </div>
+    </header>
+
+    <div class="programs-grid">
+        <!-- Weight Loss -->
+        <div class="program-card animate-up">
+            <div class="program-header">
+                <div class="program-icon"><i class="fas fa-weight"></i></div>
+                <h3>Weight Loss Plan</h3>
+                <p class="text-muted">Lose 5-7kg per month</p>
+            </div>
+            <div class="program-body">
+                <ul class="program-features">
+                    <li><i class="fas fa-check"></i> Customized Indian Diet Chart</li>
+                    <li><i class="fas fa-check"></i> No starvation or crash diets</li>
+                    <li><i class="fas fa-check"></i> Weekly Progress Tracking</li>
+                    <li><i class="fas fa-check"></i> 24x7 WhatsApp Coach Support</li>
+                </ul>
+                <a href="quiz.html" class="btn btn-outline" style="width: 100%;">View Details & Pricing</a>
+            </div>
+        </div>
+
+        <!-- Weight Gain -->
+        <div class="program-card animate-up" style="animation-delay: 0.1s;">
+            <div class="program-header">
+                <div class="program-icon"><i class="fas fa-dumbbell"></i></div>
+                <h3>Weight Gain Plan</h3>
+                <p class="text-muted">Build healthy muscle mass</p>
+            </div>
+            <div class="program-body">
+                <ul class="program-features">
+                    <li><i class="fas fa-check"></i> Calorie-surplus delicious meals</li>
+                    <li><i class="fas fa-check"></i> Focus on muscle, not fat</li>
+                    <li><i class="fas fa-check"></i> Supplementation guidance</li>
+                    <li><i class="fas fa-check"></i> Weekly Video Check-ins</li>
+                </ul>
+                <a href="quiz.html" class="btn btn-outline" style="width: 100%;">View Details & Pricing</a>
+            </div>
+        </div>
+
+        <!-- Clinical Nutrition -->
+        <div class="program-card animate-up" style="animation-delay: 0.2s; border: 2px solid var(--primary-blue);">
+            <div class="program-header" style="background: var(--primary-blue); color: white;">
+                <div class="program-icon" style="background: white; color: var(--primary-blue);"><i class="fas fa-notes-medical"></i></div>
+                <h3 style="color: white;">Special/Clinical Diet</h3>
+                <p style="opacity: 0.8;">PCOD, Thyroid, Diabetes</p>
+            </div>
+            <div class="program-body">
+                <ul class="program-features">
+                    <li><i class="fas fa-check"></i> Hormone-balancing foods</li>
+                    <li><i class="fas fa-check"></i> Insulin sensitivity protocols</li>
+                    <li><i class="fas fa-check"></i> Designed by Clinical Nutritionists</li>
+                    <li><i class="fas fa-check"></i> Blood report analysis included</li>
+                </ul>
+                <a href="quiz.html" class="btn btn-primary" style="width: 100%;">Get Custom Clinical Plan</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1-on-1 Banner -->
+    <div class="container">
+        <div class="consultation-banner animate-up">
+            <div>
+                <h2 style="color: white; margin-bottom: 10px;">Need Expert Guidance?</h2>
+                <p style="font-size: 1.1rem; opacity: 0.9; max-width: 500px;">
+                    Not sure which plan is right for you? Book a 30-minute 1-on-1 video consultation with our Lead Nutritionist.
+                </p>
+            </div>
+            <div>
+                <a href="contact.html" class="btn btn-secondary" style="background: white; color: var(--primary-red); padding: 18px 40px; font-size: 1.2rem;">Book Free Call <i class="fas fa-calendar-check" style="margin-left: 8px;"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

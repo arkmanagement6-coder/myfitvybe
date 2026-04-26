@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | MyFitVybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .about-hero {
+            padding: 140px 20px 80px;
+            text-align: center;
+            background: linear-gradient(to right, rgba(29, 53, 87, 0.9), rgba(29, 53, 87, 0.8)), url('assets/hero_bg.png') center/cover;
+            color: white;
+        }
+        .about-hero h1 { color: white; margin-bottom: 20px; }
+        .about-hero p { max-width: 700px; margin: 0 auto; font-size: 1.2rem; opacity: 0.9; }
+
+        .story-section {
+            padding: 80px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            .story-section { grid-template-columns: 1fr; }
+        }
+
+        .story-img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        @media (max-width: 768px) {
+            .mission-vision { grid-template-columns: 1fr; }
+        }
+
+        .mv-card {
+            background: var(--bg-light);
+            padding: 40px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border-top: 5px solid var(--primary-red);
+        }
+        .mv-card.vision { border-top-color: var(--primary-blue); }
+        
+        .mv-icon {
+            font-size: 3rem;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+        .mv-card.vision .mv-icon { color: var(--primary-blue); }
+
+        .stat-banner {
+            background: var(--primary-red);
+            color: white;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        .stat-item h3 { font-size: 3rem; color: white; margin-bottom: 5px; }
+        .stat-item p { font-size: 1.1rem; font-weight: 500; opacity: 0.9; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">MyFit<span>Vybe</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="services.html">Programs</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="quiz.html" class="text-red">AI Quiz</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="about-hero">
+        <div class="container animate-up">
+            <h1>Our Story</h1>
+            <p>Making fitness simple, sustainable, and accessible for everyone. No crash diets. No extreme workouts.</p>
+        </div>
+    </div>
+
+    <section class="story-section">
+        <div class="animate-up">
+            <h2 style="margin-bottom: 20px;">The MyFit<span class="text-red">Vybe</span> Origin</h2>
+            <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
+                MyFitVybe started with a simple realization: the fitness industry is broken. It's full of confusing advice, unsustainable crash diets, and expensive gym memberships that most people never use.
+            </p>
+            <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
+                We saw thousands of people giving up on their health because the process felt too hard. We knew there had to be a better way—a way to lose weight and get healthy without giving up the foods you love or spending hours in a gym.
+            </p>
+            <p style="font-size: 1.1rem; color: var(--text-muted);">
+                Today, MyFitVybe is a team of certified nutritionists and coaches dedicated to creating personalized, home-based diet plans that fit effortlessly into your busy lifestyle.
+            </p>
+        </div>
+        <div class="animate-up" style="animation-delay: 0.2s;">
+            <img src="assets/hero_bg.png" alt="MyFitVybe Team" class="story-img">
+        </div>
+    </section>
+
+    <div class="stat-banner">
+        <div class="stat-item">
+            <h3>10,000+</h3>
+            <p>Lives Transformed</p>
+        </div>
+        <div class="stat-item">
+            <h3>50+</h3>
+            <p>Certified Coaches</p>
+        </div>
+        <div class="stat-item">
+            <h3>24/7</h3>
+            <p>Support Access</p>
+        </div>
+    </div>
+
+    <section class="mission-vision">
+        <div class="mv-card animate-up">
+            <i class="fas fa-bullseye mv-icon"></i>
+            <h3>Our Mission</h3>
+            <p class="text-muted" style="margin-top: 15px;">To provide simple, result-driven fitness solutions that rely on science and sustainable habits rather than restriction and exhaustion.</p>
+        </div>
+        <div class="mv-card vision animate-up" style="animation-delay: 0.2s;">
+            <i class="fas fa-eye mv-icon"></i>
+            <h3>Our Vision</h3>
+            <p class="text-muted" style="margin-top: 15px;">To build a world where achieving your dream body feels effortless, healthy, and completely natural to your everyday life.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 0;">
+        <div class="container text-center">
+            <h2 style="color: white; margin-bottom: 20px;">Ready to start your journey?</h2>
+            <a href="quiz.html" class="btn btn-primary">Take the Free Assessment</a>
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5);">
+                &copy; 2026 MyFitVybe. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
