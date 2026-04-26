@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Navbar Scroll Effect
   const navbar = document.querySelector('.navbar');
-  window.addEventListener('scroll', () => {
+  const handleScroll = () => {
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
     } else {
-      navbar.classList.add('scrolled'); // keep it scrolled for visibility on white bg, or toggle
-      if(window.scrollY === 0) navbar.classList.remove('scrolled');
+      navbar.classList.remove('scrolled');
     }
-  });
+  };
+  window.addEventListener('scroll', handleScroll);
+  handleScroll();
 
   // Mobile Menu Toggle
   const menuToggle = document.querySelector('.menu-toggle');
