@@ -160,37 +160,37 @@
             <h2>Book Free Consultation</h2>
             <p class="text-muted" style="margin-bottom: 30px;">Fill out the form below and a coach will call you back within 24 hours.</p>
             
-            <form onsubmit="event.preventDefault(); alert('Request sent! Our team will contact you shortly.');">
+            <form id="consultationForm" onsubmit="submitConsultation(event)">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" class="form-control" placeholder="John Doe" required>
+                        <input type="text" id="conName" class="form-control" placeholder="John Doe" required>
                     </div>
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" class="form-control" placeholder="+91 7668569852" required>
+                        <input type="tel" id="conPhone" class="form-control" placeholder="+91 7668569852" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Primary Goal</label>
-                    <select class="form-control" required>
+                    <select id="conGoal" class="form-control" required>
                         <option value="">Select your goal...</option>
-                        <option value="weight_loss">Weight Loss</option>
-                        <option value="weight_gain">Weight Gain</option>
-                        <option value="medical">Medical Diet (PCOD/Thyroid/Diabetes)</option>
-                        <option value="other">Other</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Weight Gain">Weight Gain</option>
+                        <option value="Medical Diet">Medical Diet (PCOD/Thyroid/Diabetes)</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Preferred Time to Call</label>
-                    <input type="time" class="form-control" required>
+                    <input type="time" id="conTime" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label>Message (Optional)</label>
-                    <textarea class="form-control" placeholder="Tell us a bit about your current challenges..."></textarea>
+                    <textarea id="conMessage" class="form-control" placeholder="Tell us a bit about your current challenges..."></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 15px;">Submit Request <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
@@ -240,5 +240,29 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        function submitConsultation(e) {
+            e.preventDefault();
+            
+            const enquiry = {
+                id: 'CONS-' + Date.now().toString(),
+                date: new Date().toLocaleDateString(),
+                name: document.getElementById('conName').value,
+                phone: document.getElementById('conPhone').value,
+                email: 'Consultation Request',
+                goal: 'Consultation: ' + document.getElementById('conGoal').value,
+                metrics: 'Time: ' + document.getElementById('conTime').value,
+                details: 'Message: ' + document.getElementById('conMessage').value
+            };
+
+            // Save to LocalStorage for Admin Dashboard Mock Mode
+            let enquiries = JSON.parse(localStorage.getItem('enquiries') || '[]');
+            enquiries.push(enquiry);
+            localStorage.setItem('enquiries', JSON.stringify(enquiries));
+
+            alert('Your consultation request has been sent! A coach will call you shortly.');
+            e.target.reset();
+        }
+    </script>
 </body>
 </html>
