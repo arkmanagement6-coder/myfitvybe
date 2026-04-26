@@ -54,10 +54,10 @@ const MockDB = {
 // Seed Mock DB if empty
 if (isMockMode && MockDB.get('products').length === 0) {
     MockDB.add('products', {
-        name: 'Whey Protein Isolate', price: 2999, originalPrice: 3999, category: 'Supplement', img: '../assets/product_1.png', desc: 'Premium protein.'
+        name: 'Whey Protein Isolate', price: 2999, originalPrice: 3999, category: 'Supplement', images: ['../assets/product_supplements.png'], desc: 'Premium protein.'
     });
     MockDB.add('products', {
-        name: 'Pre-Workout Blast', price: 1499, originalPrice: 1999, category: 'Supplement', img: '../assets/product_2.png', desc: 'High energy formula.'
+        name: 'Pre-Workout Blast', price: 1499, originalPrice: 1999, category: 'Supplement', images: ['../assets/product_supplements.png'], desc: 'High energy formula.'
     });
 }
 
@@ -94,9 +94,16 @@ function renderProductsTable(products) {
         return;
     }
     
-    productsTableBody.innerHTML = products.map(p => `
+    productsTableBody.innerHTML = products.map(p => {
+        const firstImg = (p.images && p.images.length > 0) ? p.images[0] : (p.img || '../assets/placeholder.png');
+        const moreCount = (p.images && p.images.length > 1) ? `<div style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 2px;">+${p.images.length - 1}</div>` : '';
+        
+        return `
         <tr>
-            <td><img src="${p.img}" width="40" height="40" style="border-radius: 4px; object-fit: cover;"></td>
+            <td style="width: 60px;">
+                <img src="${firstImg}" width="40" height="40" style="border-radius: 4px; object-fit: cover; border: 1px solid var(--border-color);">
+                ${moreCount}
+            </td>
             <td><strong>${p.name}</strong></td>
             <td>₹${p.price} <small style="text-decoration:line-through; color:#999;">₹${p.originalPrice}</small></td>
             <td><span class="badge badge-success">${p.category}</span></td>
@@ -105,7 +112,8 @@ function renderProductsTable(products) {
                 <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteProduct('${p.id}')">Delete</button>
             </td>
         </tr>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Handle Form Submit
@@ -113,13 +121,16 @@ productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const id = document.getElementById('prodId').value;
+    const imgInput = document.getElementById('prodImg').value;
+    const images = imgInput.split('\n').map(url => url.trim()).filter(url => url.length > 0);
+    
     const productData = {
         name: document.getElementById('prodName').value,
         price: Number(document.getElementById('prodPrice').value),
         originalPrice: Number(document.getElementById('prodOriginalPrice').value),
         category: document.getElementById('prodCategory').value,
         desc: document.getElementById('prodDesc').value,
-        img: document.getElementById('prodImg').value
+        images: images
     };
     
     if (isMockMode) {
@@ -173,7 +184,10 @@ window.editProduct = function(id) {
         document.getElementById('prodOriginalPrice').value = product.originalPrice;
         document.getElementById('prodCategory').value = product.category;
         document.getElementById('prodDesc').value = product.desc;
-        document.getElementById('prodImg').value = product.img;
+        
+        const imgUrls = product.images ? product.images.join('\n') : (product.img || '');
+        document.getElementById('prodImg').value = imgUrls;
+        
         document.getElementById('productModalTitle').textContent = 'Edit Product';
         openModal('productModal');
     }
