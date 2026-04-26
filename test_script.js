@@ -253,20 +253,20 @@ function updateCartUI() {
     container.innerHTML = cart.map(item => {
         total += (item.price * item.qty);
         totalItems += item.qty;
-        return `
+        return \`
         <div class="cart-item">
-            <img src="${item.img}" alt="${item.name}">
+            <img src="\${item.img}" alt="\${item.name}">
             <div class="cart-item-details">
-                <div class="cart-item-title">${item.name}</div>
-                <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
+                <div class="cart-item-title">\${item.name}</div>
+                <div class="cart-item-price">₹\${item.price.toLocaleString()}</div>
                 <div class="qty-controls">
-                    <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
-                    <span>${item.qty}</span>
-                    <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+                    <button class="qty-btn" onclick="updateCartQty('\${item.id}', -1)">-</button>
+                    <span>\${item.qty}</span>
+                    <button class="qty-btn" onclick="updateCartQty('\${item.id}', 1)">+</button>
                 </div>
             </div>
         </div>
-        `;
+        \`;
     }).join('');
     
     if(badge) badge.textContent = totalItems;
