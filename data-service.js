@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="margin-top: 20px;">
                     <div class="product-price" style="margin-top: 0;">₹${p.price} <span class="original-price">₹${p.originalPrice}</span></div>
                     <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button onclick="addToCart('${p.id || p.name}', '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${cleanImgUrl}')" class="btn btn-outline" style="flex:1; padding: 10px; font-size: 0.9rem;"><i class="fas fa-cart-plus"></i> Add</button>
-                        <button onclick="addToCart('${p.id || p.name}', '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${cleanImgUrl}'); window.location.href='checkout.html'" class="btn btn-primary" style="flex:1; padding: 10px; font-size: 0.9rem;">Buy Now</button>
+                        <button class="btn btn-outline add-to-cart-btn" data-id="${p.id || p.name}" data-name="${String(p.name).replace(/"/g, '&quot;')}" data-price="${p.price}" data-img="${cleanImgUrl}" style="flex:1; padding: 10px; font-size: 0.9rem;"><i class="fas fa-cart-plus"></i> Add</button>
+                        <button class="btn btn-primary buy-now-btn" data-id="${p.id || p.name}" data-name="${String(p.name).replace(/"/g, '&quot;')}" data-price="${p.price}" data-img="${cleanImgUrl}" style="flex:1; padding: 10px; font-size: 0.9rem;">Buy Now</button>
                     </div>
                 </div>
             </div>
@@ -68,5 +68,29 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
         `).join('');
+    });
+
+    // Global event listener for Add/Buy buttons to prevent inline syntax errors
+    document.addEventListener('click', (e) => {
+        const addBtn = e.target.closest('.add-to-cart-btn');
+        if (addBtn) {
+            const priceNum = Number(String(addBtn.dataset.price).replace(/[^0-9.-]+/g,"")) || 0;
+            if(window.addToCart) {
+                window.addToCart(addBtn.dataset.id, addBtn.dataset.name, priceNum, addBtn.dataset.img);
+            } else {
+                alert("Cart system is still loading, please wait a moment.");
+            }
+        }
+
+        const buyBtn = e.target.closest('.buy-now-btn');
+        if (buyBtn) {
+            const priceNum = Number(String(buyBtn.dataset.price).replace(/[^0-9.-]+/g,"")) || 0;
+            if(window.addToCart) {
+                window.addToCart(buyBtn.dataset.id, buyBtn.dataset.name, priceNum, buyBtn.dataset.img);
+                window.location.href = 'checkout.html';
+            } else {
+                alert("Cart system is still loading, please wait a moment.");
+            }
+        }
     });
 });
