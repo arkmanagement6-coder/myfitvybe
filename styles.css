@@ -420,7 +420,7 @@ footer {
 /* Hero Slider */
 .hero-slider-section {
   position: relative;
-  height: 90vh;
+  height: 100vh;
   min-height: 600px;
 }
 .slider-container {
