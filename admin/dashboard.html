@@ -196,6 +196,36 @@
         </div>
     </div>
 
+    <!-- Service Modal -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="serviceModalTitle">Add New Program/Service</h3>
+                <span class="close-modal" onclick="closeModal('serviceModal')">&times;</span>
+            </div>
+            <form id="serviceForm">
+                <input type="hidden" id="srvId">
+                <div class="form-group">
+                    <label>Program Name</label>
+                    <input type="text" id="srvName" class="form-control" placeholder="e.g. Weight Loss Plan" required>
+                </div>
+                <div class="form-group">
+                    <label>Short Description</label>
+                    <input type="text" id="srvDesc" class="form-control" placeholder="e.g. Lose 5-7kg per month" required>
+                </div>
+                <div class="form-group">
+                    <label>Features (Comma separated)</label>
+                    <textarea id="srvFeatures" class="form-control" rows="3" placeholder="Custom Diet, No Gym, 24x7 Support" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Icon Class (FontAwesome)</label>
+                    <input type="text" id="srvIcon" class="form-control" placeholder="e.g. fas fa-weight" value="fas fa-weight" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Service</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Inline scripts for basic modal toggling (complex logic in dashboard.js) -->
     <script>
         window.openModal = function(id) {

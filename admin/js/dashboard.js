@@ -24,6 +24,7 @@ navItems.forEach(item => {
         
         // Load data based on view
         if (targetId === 'products') loadProducts();
+        if (targetId === 'services') loadServices();
         if (targetId === 'inquiries') loadInquiries();
     });
 });
@@ -58,6 +59,14 @@ if (isMockMode && MockDB.get('products').length === 0) {
     });
     MockDB.add('products', {
         name: 'Pre-Workout Blast', price: 1499, originalPrice: 1999, category: 'Supplement', images: ['../assets/product_supplements.png'], desc: 'High energy formula.'
+    });
+}
+if (isMockMode && MockDB.get('services').length === 0) {
+    MockDB.add('services', {
+        name: 'Weight Loss Plan', desc: 'Lose 5-7kg per month', features: ['Customized Indian Diet Chart', 'No starvation or crash diets', 'Weekly Progress Tracking'], icon: 'fas fa-weight'
+    });
+    MockDB.add('services', {
+        name: 'Weight Gain Plan', desc: 'Build healthy muscle mass', features: ['Calorie-surplus delicious meals', 'Focus on muscle, not fat', 'Weekly Video Check-ins'], icon: 'fas fa-dumbbell'
     });
 }
 
@@ -280,6 +289,116 @@ window.editProduct = function(id) {
         
         document.getElementById('productModalTitle').textContent = 'Edit Product';
         openModal('productModal');
+    }
+}
+
+// --- CRUD Operations: Services ---
+const servicesTableBody = document.getElementById('servicesTableBody');
+const serviceForm = document.getElementById('serviceForm');
+
+async function loadServices() {
+    servicesTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Loading...</td></tr>';
+    let services = [];
+    
+    if (isMockMode) {
+        services = MockDB.get('services');
+    } else {
+        try {
+            const querySnapshot = await getDocs(collection(db, "services"));
+            querySnapshot.forEach((doc) => {
+                services.push({ id: doc.id, ...doc.data() });
+            });
+        } catch (e) {
+            console.error("Error reading Firestore", e);
+            servicesTableBody.innerHTML = `<tr><td colspan="4" style="color:red;">Error loading database: ${e.message}</td></tr>`;
+            return;
+        }
+    }
+    
+    renderServicesTable(services);
+}
+
+function renderServicesTable(services) {
+    if (services.length === 0) {
+        servicesTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No services found.</td></tr>';
+        return;
+    }
+    
+    servicesTableBody.innerHTML = services.map(s => `
+        <tr>
+            <td><i class="${s.icon}" style="color: var(--primary-red); margin-right: 10px;"></i> <strong>${s.name}</strong></td>
+            <td>${s.desc}</td>
+            <td>${s.features ? s.features.length + ' features' : ''}</td>
+            <td>
+                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;" onclick="editService('${s.id}')">Edit</button>
+                <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteService('${s.id}')">Delete</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+if(serviceForm) {
+    serviceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const id = document.getElementById('srvId').value;
+        const serviceData = {
+            name: document.getElementById('srvName').value,
+            desc: document.getElementById('srvDesc').value,
+            icon: document.getElementById('srvIcon').value,
+            features: document.getElementById('srvFeatures').value.split(',').map(f => f.trim()).filter(f => f.length > 0)
+        };
+        
+        if (isMockMode) {
+            if (id) { MockDB.update('services', id, serviceData); } 
+            else { MockDB.add('services', serviceData); }
+        } else {
+            try {
+                if (id) {
+                    await updateDoc(doc(db, "services", id), serviceData);
+                } else {
+                    await addDoc(collection(db, "services"), serviceData);
+                }
+            } catch(e) {
+                alert('Firebase Error: ' + e.message);
+                return;
+            }
+        }
+        
+        closeModal('serviceModal');
+        loadServices();
+    });
+}
+
+window.deleteService = async function(id) {
+    if(!confirm('Are you sure you want to delete this service?')) return;
+    
+    if (isMockMode) {
+        MockDB.delete('services', id);
+    } else {
+        try { await deleteDoc(doc(db, "services", id)); } 
+        catch(e) { alert(e.message); return; }
+    }
+    loadServices();
+}
+
+window.editService = function(id) {
+    let service;
+    if (isMockMode) {
+        service = MockDB.get('services').find(s => s.id === id);
+    } else {
+        alert("Edit in real Firestore mode requires state management. Check implementation.");
+        return;
+    }
+    
+    if (service) {
+        document.getElementById('srvId').value = service.id;
+        document.getElementById('srvName').value = service.name;
+        document.getElementById('srvDesc').value = service.desc;
+        document.getElementById('srvIcon').value = service.icon || 'fas fa-star';
+        document.getElementById('srvFeatures').value = service.features ? service.features.join(', ') : '';
+        document.getElementById('serviceModalTitle').textContent = 'Edit Program/Service';
+        openModal('serviceModal');
     }
 }
 

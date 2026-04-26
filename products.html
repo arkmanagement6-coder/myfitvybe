@@ -7,20 +7,25 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .product-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
+        .page-header {
+            background: var(--primary-blue);
+            color: white;
             padding: 120px 20px 60px;
+            text-align: center;
+        }
+        .page-header h1 { color: white; margin-bottom: 15px; }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 80px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
-
-        @media (max-width: 768px) {
-            .product-container {
-                grid-template-columns: 1fr;
-                padding-top: 100px;
-            }
+        .product-card {
+            text-align: center;
+            padding: 20px;
         }
 
         /* Image Zoom */
@@ -220,91 +225,18 @@
         </div>
     </nav>
 
-    <!-- Product Section -->
-    <div class="product-container">
-        <!-- Image Area -->
-        <div>
-            <div class="product-image-wrap">
-                <span class="badge badge-red" style="position: absolute; top: 20px; left: 20px; z-index: 2;">Trending</span>
-                <img src="assets/product.png" alt="Vybe Whey Protein">
-            </div>
-            
-            <div style="margin-top: 40px;">
-                <h3>Frequently Asked Questions</h3>
-                <div style="margin-top: 20px;">
-                    <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                        <strong style="color: var(--primary-blue);">Is this suitable for beginners?</strong>
-                        <p class="text-muted" style="margin-top: 5px;">Absolutely! It's highly digestible and perfect for anyone starting their fitness journey.</p>
-                    </div>
-                    <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                        <strong style="color: var(--primary-blue);">Does it contain artificial sweeteners?</strong>
-                        <p class="text-muted" style="margin-top: 5px;">No, we use 100% natural Stevia extract.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Details Area -->
-        <div>
-            <h1 class="product-title">Vybe Whey Protein Isolate</h1>
-            <div class="reviews">
-                ★★★★★ <span>(4.9/5 from 1,284 Reviews)</span>
-            </div>
-            
-            <p class="text-muted" style="font-size: 1.1rem;">
-                Advanced rapid-absorbing whey isolate for optimal muscle recovery. Zero bloat, incredible taste, and zero added sugar.
+    <header class="page-header">
+        <div class="container animate-up">
+            <h1>Premium Supplements</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.9;">
+                Accelerate your results with our lab-tested, premium quality products. Free shipping on all orders.
             </p>
-
-            <div class="price-section">
-                <span class="current-price">₹2,499</span>
-                <span class="old-price">₹3,999</span>
-                <span class="discount-badge">Save 38%</span>
-            </div>
-
-            <div class="stock-status low">
-                <i class="fas fa-fire"></i> Only 12 units left in stock - Order soon!
-            </div>
-
-            <ul class="benefits-bullets">
-                <li><i class="fas fa-check-circle"></i> 24g Premium Protein per scoop</li>
-                <li><i class="fas fa-check-circle"></i> 5.5g BCAAs for faster recovery</li>
-                <li><i class="fas fa-check-circle"></i> Added digestive enzymes (No bloating)</li>
-                <li><i class="fas fa-check-circle"></i> 100% Vegetarian & Gluten-Free</li>
-            </ul>
-
-            <div class="purchase-options">
-                <label class="option-radio active" onclick="document.querySelectorAll('.option-radio').forEach(el=>el.classList.remove('active')); this.classList.add('active');">
-                    <input type="radio" name="purchase_type" checked>
-                    <div>
-                        <strong>One-Time Purchase</strong>
-                        <div class="text-muted" style="font-size: 0.9rem;">₹2,499 / tub</div>
-                    </div>
-                </label>
-                
-                <label class="option-radio" onclick="document.querySelectorAll('.option-radio').forEach(el=>el.classList.remove('active')); this.classList.add('active');">
-                    <input type="radio" name="purchase_type">
-                    <div style="flex: 1;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <strong>Monthly Subscription <span class="badge badge-red" style="font-size: 0.7rem;">Save 15%</span></strong>
-                            <strong style="color: var(--primary-red);">₹2,124</strong>
-                        </div>
-                        <div class="text-muted" style="font-size: 0.9rem;">Delivered every 30 days. Cancel anytime.</div>
-                    </div>
-                </label>
-            </div>
-
-            <div class="action-buttons">
-                <button class="btn btn-outline" style="padding: 15px 25px;"><i class="fas fa-shopping-cart"></i></button>
-                <button class="btn btn-primary btn-buy" onclick="alert('Proceeding to checkout...')">Buy Now - ₹2,499</button>
-            </div>
-
-            <div class="trust-icons">
-                <div><i class="fas fa-shield-alt"></i> 100% Authentic</div>
-                <div><i class="fas fa-truck"></i> Free Delivery</div>
-                <div><i class="fas fa-undo"></i> 7-Day Returns</div>
-                <div><i class="fas fa-lock"></i> Secure Pay</div>
-            </div>
         </div>
+    </header>
+
+    <!-- Dynamic Product Grid -->
+    <div class="product-grid dynamic-product-grid">
+        <!-- Products will be injected here dynamically by data-service.js -->
     </div>
 
     <!-- Upsell / Combo -->
@@ -335,5 +267,6 @@
     </a>
 
     <script src="script.js"></script>
+    <script src="data-service.js"></script>
 </body>
 </html>
