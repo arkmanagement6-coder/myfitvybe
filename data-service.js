@@ -40,7 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div style="margin-top: 20px;">
                     <div class="product-price" style="margin-top: 0;">₹${p.price} <span class="original-price">₹${p.originalPrice}</span></div>
-                    <a href="https://wa.me/1234567890?text=I'm interested in buying ${encodeURIComponent(p.name)}" target="_blank" class="btn btn-primary" style="width: 100%;"><i class="fab fa-whatsapp"></i> Order Now</a>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button onclick="addToCart('${p.id || p.name}', '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${cleanImgUrl}')" class="btn btn-outline" style="flex:1; padding: 10px; font-size: 0.9rem;"><i class="fas fa-cart-plus"></i> Add</button>
+                        <button onclick="addToCart('${p.id || p.name}', '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${cleanImgUrl}'); window.location.href='checkout.html'" class="btn btn-primary" style="flex:1; padding: 10px; font-size: 0.9rem;">Buy Now</button>
+                    </div>
                 </div>
             </div>
             `;

@@ -22,10 +22,10 @@ navItems.forEach(item => {
         // Update Title
         pageTitle.textContent = item.textContent.trim();
         
-        // Load data based on view
         if (targetId === 'products') loadProducts();
         if (targetId === 'services') loadServices();
-        if (targetId === 'inquiries') loadInquiries();
+        if (targetId === 'orders') loadOrders();
+        if (targetId === 'settings') loadSettings();
     });
 });
 
@@ -402,17 +402,65 @@ window.editService = function(id) {
     }
 }
 
-// --- Inquiries View ---
-async function loadInquiries() {
-    // Coming soon stub
-    const inquiriesTableBody = document.getElementById('inquiriesTableBody');
-    inquiriesTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No inquiries found. Ensure forms are pointing to Firebase.</td></tr>';
+// --- Orders View ---
+const ordersTableBody = document.getElementById('ordersTableBody');
+async function loadOrders() {
+    ordersTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading...</td></tr>';
+    
+    // In mock mode, fetch from localStorage
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    
+    if (orders.length === 0) {
+        ordersTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No orders found.</td></tr>';
+        return;
+    }
+
+    ordersTableBody.innerHTML = orders.map(o => `
+        <tr>
+            <td><strong>${o.id}</strong><br><small class="text-muted">${o.date}</small></td>
+            <td>${o.customer.name}<br><small>${o.customer.phone}</small></td>
+            <td>₹${o.total.toLocaleString()}</td>
+            <td><span class="badge ${o.paymentMethod === 'online' ? 'badge-blue' : 'badge-red'}">${o.paymentMethod.toUpperCase()}</span></td>
+            <td><span class="badge" style="background:#eee; color:#333;">${o.status}</span></td>
+            <td>
+                <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" onclick="viewOrderDetails('${o.id}')">View</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+window.viewOrderDetails = function(id) {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const o = orders.find(x => x.id === id);
+    if(o) {
+        let itemsStr = o.items.map(i => `${i.qty}x ${i.name}`).join('\\n');
+        alert(`Order ${o.id}\\n\\nCustomer: ${o.customer.name}\\nEmail: ${o.customer.email}\\nAddress: ${o.customer.address}\\n\\nItems:\\n${itemsStr}\\n\\nTotal: ₹${o.total.toLocaleString()}`);
+    }
+}
+
+// --- Settings View ---
+const settingsForm = document.getElementById('settingsForm');
+
+async function loadSettings() {
+    const settings = JSON.parse(localStorage.getItem('settings')) || { paymentLink: '' };
+    document.getElementById('setPaymentLink').value = settings.paymentLink;
+}
+
+if(settingsForm) {
+    settingsForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const settings = {
+            paymentLink: document.getElementById('setPaymentLink').value
+        };
+        localStorage.setItem('settings', JSON.stringify(settings));
+        alert('Settings saved successfully! The checkout page will now redirect here for online payments.');
+    });
 }
 
 // Initialize Overview Stats
 setTimeout(() => {
     if (isMockMode) {
         document.getElementById('stat-products').textContent = MockDB.get('products').length;
-        document.getElementById('stat-inquiries').textContent = "0";
+        document.getElementById('stat-orders').textContent = (JSON.parse(localStorage.getItem('orders')) || []).length;
     }
 }, 500);
