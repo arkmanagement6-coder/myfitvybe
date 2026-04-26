@@ -76,3 +76,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Hero Slider Logic
+let currentSlideIndex = 0;
+let slides, dots, slideInterval;
+
+function initSlider() {
+    slides = document.querySelectorAll('.slide');
+    dots = document.querySelectorAll('.nav-dot');
+    if (slides.length === 0) return;
+    startSlideTimer();
+}
+
+function updateSlider(index) {
+    if(!slides || slides.length === 0) return;
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+    currentSlideIndex = index;
+}
+
+function nextSlide() {
+    if(!slides || slides.length === 0) return;
+    let nextIndex = (currentSlideIndex + 1) % slides.length;
+    updateSlider(nextIndex);
+    resetSlideTimer();
+}
+
+function prevSlide() {
+    if(!slides || slides.length === 0) return;
+    let prevIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+    updateSlider(prevIndex);
+    resetSlideTimer();
+}
+
+function goToSlide(index) {
+    updateSlider(index);
+    resetSlideTimer();
+}
+
+function startSlideTimer() {
+    slideInterval = setInterval(nextSlide, 5000);
+}
+
+function resetSlideTimer() {
+    clearInterval(slideInterval);
+    startSlideTimer();
+}
+
+document.addEventListener('DOMContentLoaded', initSlider);
