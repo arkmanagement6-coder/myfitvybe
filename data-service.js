@@ -75,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     });
 
+    // Re-observe newly injected elements for scroll animations
+    if (window.scrollObserver) {
+        document.querySelectorAll('.dynamic-service-grid .animate-up').forEach(el => {
+            window.scrollObserver.observe(el);
+        });
+    }
+
     // Global event listener for Add/Buy buttons to prevent inline syntax errors
     document.addEventListener('click', (e) => {
         const addBtn = e.target.closest('.add-to-cart-btn');

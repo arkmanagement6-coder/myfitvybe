@@ -83,17 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
     rootMargin: "0px 0px -50px 0px"
   };
 
-  const observer = new IntersectionObserver((entries) => {
+  window.scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('scrolled-in');
-        observer.unobserve(entry.target);
+        window.scrollObserver.unobserve(entry.target);
       }
     });
   }, observerOptions);
 
   document.querySelectorAll('.animate-up').forEach(el => {
-    observer.observe(el);
+    window.scrollObserver.observe(el);
   });
 });
 
