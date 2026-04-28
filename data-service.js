@@ -18,8 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'One to One Consultation', desc: 'Expert guidance from lead nutritionists', features: ['30-minute detailed video call', 'In-depth lifestyle analysis', 'Actionable dietary roadmap', 'Q&A session for doubts'], icon: 'fas fa-user-md' }
     ];
 
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    if (products.length === 0) products = fallbackProducts;
+    let storedProducts = localStorage.getItem('products');
+    let products = [];
+    if (storedProducts === null) {
+        products = fallbackProducts;
+    } else {
+        products = JSON.parse(storedProducts);
+    }
 
     let services = JSON.parse(localStorage.getItem('services')) || [];
     // Force update local storage if it contains the old mock data (3 or fewer items)
@@ -31,23 +36,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render Products dynamically into any container with class .dynamic-product-grid
     const productGrids = document.querySelectorAll('.dynamic-product-grid');
     productGrids.forEach(grid => {
-        grid.innerHTML = products.map(p => {
+        if (products.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No products available at the moment. Please check back later.</div>';
+            return;
+        }
+
+        grid.innerHTML = products.map((p, idx) => {
             const imgUrl = (p.images && p.images.length > 0) ? p.images[0] : (p.img || 'assets/product.png');
             // Clean up relative paths if coming from admin dashboard
             const cleanImgUrl = imgUrl.startsWith('../') ? imgUrl.substring(3) : imgUrl;
             
             return `
-            <div class="card product-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <img src="${cleanImgUrl}" alt="${p.name}" class="product-img" style="height: 200px; object-fit: contain;">
-                    <h3>${p.name}</h3>
-                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px; height: 60px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">${p.desc}</p>
+            <div class="program-card animate-up" style="display: flex; flex-direction: column; justify-content: space-between; animation-delay: ${idx * 0.1}s;">
+                <div style="position: relative; background: var(--bg-light); padding: 30px; text-align: center; border-bottom: 1px solid #eee; height: 260px; display: flex; align-items: center; justify-content: center;">
+                    ${p.originalPrice > p.price ? `<div style="position: absolute; top: 15px; left: 15px; background: var(--primary-red); color: white; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; z-index: 2; box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);">Save ₹${p.originalPrice - p.price}</div>` : ''}
+                    <img src="${cleanImgUrl}" alt="${p.name}" style="max-height: 200px; max-width: 100%; object-fit: contain; transition: transform 0.4s ease;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
                 </div>
-                <div style="margin-top: 20px;">
-                    <div class="product-price" style="margin-top: 0;">₹${p.price} <span class="original-price">₹${p.originalPrice}</span></div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="btn btn-outline add-to-cart-btn" data-id="${p.id || p.name}" data-name="${String(p.name).replace(/"/g, '&quot;')}" data-price="${p.price}" data-img="${cleanImgUrl}" style="flex:1; padding: 10px; font-size: 0.9rem;"><i class="fas fa-cart-plus"></i> Add</button>
-                        <button class="btn btn-primary buy-now-btn" data-id="${p.id || p.name}" data-name="${String(p.name).replace(/"/g, '&quot;')}" data-price="${p.price}" data-img="${cleanImgUrl}" style="flex:1; padding: 10px; font-size: 0.9rem;">Buy Now</button>
+                <div style="padding: 25px; flex: 1; display: flex; flex-direction: column;">
+                    <div style="color: #FFD700; font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span style="color: var(--text-muted);">(4.8/5)</span></div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 10px; color: var(--primary-blue);">${p.name}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${p.desc}</p>
+                    
+                    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark);">₹${p.price}</span>
+                        ${p.originalPrice > p.price ? `<span style="text-decoration: line-through; color: var(--text-muted); font-size: 1.1rem;">₹${p.originalPrice}</span>` : ''}
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn btn-outline add-to-cart-btn" data-id="${p.id || p.name}" data-name="${String(p.name).replace(/"/g, '&quot;')}" data-price="${p.price}" data-img="${cleanImgUrl}" style="padding: 12px; font-weight: bold;"><i class="fas fa-cart-plus"></i> Add</button>
+                        <button class="btn btn-primary buy-now-btn" data-id="${p.id || p.name}" data-name="${String(p.name).replace(/"/g, '&quot;')}" data-price="${p.price}" data-img="${cleanImgUrl}" style="padding: 12px; font-weight: bold;">Buy Now</button>
                     </div>
                 </div>
             </div>
@@ -77,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Re-observe newly injected elements for scroll animations
     if (window.scrollObserver) {
-        document.querySelectorAll('.dynamic-service-grid .animate-up').forEach(el => {
+        document.querySelectorAll('.dynamic-service-grid .animate-up, .dynamic-product-grid .animate-up').forEach(el => {
             window.scrollObserver.observe(el);
         });
     }
