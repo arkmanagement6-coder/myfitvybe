@@ -37,7 +37,8 @@ const MockDB = {
     save: (collectionName, data) => localStorage.setItem(collectionName, JSON.stringify(data)),
     add: (collectionName, item) => {
         const data = MockDB.get(collectionName);
-        item.id = Date.now().toString();
+        // Add random string to ensure uniqueness if called rapidly in a loop
+        item.id = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 5);
         data.push(item);
         MockDB.save(collectionName, data);
     },
