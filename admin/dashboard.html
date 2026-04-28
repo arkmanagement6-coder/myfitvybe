@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="/admin/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script>
+        // Force domain sync so localStorage Mock Data is shared with the frontend
+        if (window.location.hostname === 'myfitvybe.vercel.app') {
+            window.location.href = window.location.href.replace('myfitvybe.vercel.app', 'www.myfitvybe.com');
+        }
+    </script>
+    
     <script type="module" src="/admin/js/firebase-config.js"></script>
     <script type="module" src="/admin/js/auth.js"></script>
     <script type="module" src="/admin/js/dashboard.js"></script>
