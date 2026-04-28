@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Fallback Mock Data if Admin Panel hasn't been used yet to prevent empty sections
     const fallbackProducts = [
-        { name: 'Vybe Whey Protein Isolate', price: 2499, originalPrice: 3999, category: 'Supplement', images: ['assets/product.png'], desc: 'Advanced rapid-absorbing whey isolate for optimal muscle recovery. Zero bloat, incredible taste, and zero added sugar.' },
-        { name: 'Fat Burner Pro', price: 1299, originalPrice: 1999, category: 'Supplement', images: ['assets/product.png'], desc: 'Natural thermogenic fat burner to boost your metabolism.' },
-        { name: 'Daily Multi-Vitamins', price: 899, originalPrice: 1299, category: 'Supplement', images: ['assets/product.png'], desc: 'Complete daily nutritional support for active individuals.' }
+        { name: 'Wellness', price: 999, originalPrice: 2011, category: 'Supplement', images: ['assets/product.png'], desc: 'Advanced wellness supplement for daily health.' },
+        { name: 'Fat Burners', price: 999, originalPrice: 1599, category: 'Supplement', images: ['assets/product.png'], desc: 'Natural thermogenic fat burner to boost your metabolism and energy.' }
     ];
 
     const fallbackServices = [
