@@ -12,16 +12,21 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const fallbackServices = [
-        { name: 'Weight Loss Plan', desc: 'Lose 5-7kg per month', features: ['Customized Indian Diet Chart', 'No starvation or crash diets', 'Weekly Progress Tracking', '24x7 WhatsApp Coach Support'], icon: 'fas fa-weight' },
-        { name: 'Weight Gain Plan', desc: 'Build healthy muscle mass', features: ['Calorie-surplus delicious meals', 'Focus on muscle, not fat', 'Supplementation guidance', 'Weekly Video Check-ins'], icon: 'fas fa-dumbbell' },
-        { name: 'Special/Clinical Diet', desc: 'PCOD, Thyroid, Diabetes', features: ['Hormone-balancing foods', 'Insulin sensitivity protocols', 'Designed by Clinical Nutritionists', 'Blood report analysis included'], icon: 'fas fa-notes-medical' }
+        { name: 'Weight Loss Program', desc: 'Lose 5-7kg per month naturally', features: ['Customized Indian Diet Chart', 'No starvation or crash diets', 'Weekly Progress Tracking', '24x7 WhatsApp Coach Support'], icon: 'fas fa-weight' },
+        { name: 'Weight Gain Program', desc: 'Build healthy muscle mass', features: ['Calorie-surplus delicious meals', 'Focus on muscle, not fat', 'Supplementation guidance', 'Weekly Video Check-ins'], icon: 'fas fa-dumbbell' },
+        { name: 'Customized Diet Plan', desc: 'Tailored for PCOD, Thyroid & Diabetes', features: ['Hormone-balancing foods', 'Insulin sensitivity protocols', 'Designed by Clinical Nutritionists', 'Blood report analysis included'], icon: 'fas fa-notes-medical' },
+        { name: 'One to One Consultation', desc: 'Expert guidance from lead nutritionists', features: ['30-minute detailed video call', 'In-depth lifestyle analysis', 'Actionable dietary roadmap', 'Q&A session for doubts'], icon: 'fas fa-user-md' }
     ];
 
     let products = JSON.parse(localStorage.getItem('products')) || [];
     if (products.length === 0) products = fallbackProducts;
 
     let services = JSON.parse(localStorage.getItem('services')) || [];
-    if (services.length === 0) services = fallbackServices;
+    // Force update local storage if it contains the old mock data (3 or fewer items)
+    if (services.length === 0 || services.length <= 3) {
+        services = fallbackServices;
+        localStorage.setItem('services', JSON.stringify(services));
+    }
 
     // Render Products dynamically into any container with class .dynamic-product-grid
     const productGrids = document.querySelectorAll('.dynamic-product-grid');

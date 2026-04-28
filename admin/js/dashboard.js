@@ -62,12 +62,21 @@ if (isMockMode && MockDB.get('products').length === 0) {
         name: 'Pre-Workout Blast', price: 1499, originalPrice: 1999, category: 'Supplement', images: ['../assets/product_supplements.png'], desc: 'High energy formula.'
     });
 }
-if (isMockMode && MockDB.get('services').length === 0) {
+if (isMockMode && MockDB.get('services').length <= 3) {
+    // Clear old services if they exist
+    MockDB.save('services', []);
+    
     MockDB.add('services', {
-        name: 'Weight Loss Plan', desc: 'Lose 5-7kg per month', features: ['Customized Indian Diet Chart', 'No starvation or crash diets', 'Weekly Progress Tracking'], icon: 'fas fa-weight'
+        name: 'Weight Loss Program', desc: 'Lose 5-7kg per month naturally', features: ['Customized Indian Diet Chart', 'No starvation or crash diets', 'Weekly Progress Tracking', '24x7 WhatsApp Coach Support'], icon: 'fas fa-weight'
     });
     MockDB.add('services', {
-        name: 'Weight Gain Plan', desc: 'Build healthy muscle mass', features: ['Calorie-surplus delicious meals', 'Focus on muscle, not fat', 'Weekly Video Check-ins'], icon: 'fas fa-dumbbell'
+        name: 'Weight Gain Program', desc: 'Build healthy muscle mass', features: ['Calorie-surplus delicious meals', 'Focus on muscle, not fat', 'Supplementation guidance', 'Weekly Video Check-ins'], icon: 'fas fa-dumbbell'
+    });
+    MockDB.add('services', {
+        name: 'Customized Diet Plan', desc: 'Tailored for PCOD, Thyroid & Diabetes', features: ['Hormone-balancing foods', 'Insulin sensitivity protocols', 'Designed by Clinical Nutritionists', 'Blood report analysis included'], icon: 'fas fa-notes-medical'
+    });
+    MockDB.add('services', {
+        name: 'One to One Consultation', desc: 'Expert guidance from lead nutritionists', features: ['30-minute detailed video call', 'In-depth lifestyle analysis', 'Actionable dietary roadmap', 'Q&A session for doubts'], icon: 'fas fa-user-md'
     });
 }
 
